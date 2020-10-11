@@ -22,7 +22,7 @@ namespace SolarCoffee.Web.Controllers
         {
             _logger.LogInformation("Getting all products");
             var products = _productService.GetAllProducts();
-            return Ok();
+            return Ok(products);
         }
     }
 }
