@@ -8,7 +8,6 @@ using SolarCoffee.Web.ViewModels;
 namespace SolarCoffee.Web.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
         private readonly ILogger<OrderController> _logger;
@@ -22,16 +21,17 @@ namespace SolarCoffee.Web.Controllers
             ICustomerService customerService)
         {
             _logger = logger;
-             _orderService = orderService;
+            _orderService = orderService;
             _customerService = customerService;
         }
 
-        [HttpPost]
+        [HttpPost("api/invoice")]
         public IActionResult GenerateNewOrder([FromBody] InvoiceModel invoice)
         {
             _logger.LogInformation("Generating invoice");
             var order = OrderMapper.SerializeInvoiceToOrder(invoice);
             order.Customer = _customerService.GetCustomerById(invoice.CustomerId);
+            _orderService.GenerateOpenOrder(order);
             return Ok();
         }
     }
