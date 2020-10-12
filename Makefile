@@ -3,7 +3,7 @@ PROJECT_NAME ?= SolarCoffee
 ORG_NAME ?= SolarCoffee
 REPO_NAME ?= SolarCoffee
 
-.PHONY: migrations db run watchrun
+.PHONY: migrations db run wrun
 
 migrations: 
 	cd SolarCoffee.Data && dotnet ef --startup-project ../SolarCoffee.Web migrations add $(mname) & cd ..
@@ -14,5 +14,5 @@ db:
 run:
 	dotnet run -p SolarCoffee.Web
 
-watchrun:
+wrun:
 	dotnet watch run -p SolarCoffee.Web
