@@ -19,11 +19,6 @@ namespace SolarCoffee.Services.Inventory
             _logger = logger;
         }
 
-        public void CreateSnapshot()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public List<ProductInventory> GetCurrentInventory()
         {
             return _dbContext.ProductInventories.Include(pi => pi.Product)
@@ -33,12 +28,17 @@ namespace SolarCoffee.Services.Inventory
 
         public ProductInventory GetProductInventoryByProductId(int productId)
         {
-            throw new System.NotImplementedException();
+            return _dbContext.ProductInventories.Include(pi => pi.Product)
+                                                .FirstOrDefault(pi => pi.Product.Id == productId);
         }
 
         public List<ProductInventorySnapshot> GetSnapshotHistory()
         {
-            throw new System.NotImplementedException();
+            var earliest = DateTime.UtcNow - TimeSpan.FromHours(6);
+
+            return _dbContext.ProductInventorySnapshots.Include(pis => pis.Product)
+                                                       .Where(pis => pis.SnapshotTime > earliest && !pis.Product.IsArchived)
+                                                       .ToList();
         }
 
         public ServiceResponse<ProductInventory> UpdateUnitsAvailable(int id, int adjusment)
@@ -52,7 +52,7 @@ namespace SolarCoffee.Services.Inventory
 
                 try
                 {
-                    CreateSnapshot();
+                    CreateSnapshot(inventory);
                 }
                 catch (Exception e)
                 {
@@ -79,6 +79,18 @@ namespace SolarCoffee.Services.Inventory
                     Time = DateTime.UtcNow
                 };
             }
+        }
+
+        private void CreateSnapshot(ProductInventory inventory)
+        {
+            var snapshot = new ProductInventorySnapshot
+            {
+                Product = inventory.Product,
+                QuantityOnHand = inventory.QuantityOnHand,
+                SnapshotTime = DateTime.UtcNow
+            };
+
+            _dbContext.Add(snapshot);
         }
     }
 }
