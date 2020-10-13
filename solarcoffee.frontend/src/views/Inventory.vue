@@ -2,6 +2,16 @@
   <div class="inventory-container">
     <h1 id="inventoryTitle">Inventory Dashboard</h1>
     <hr />
+
+    <div class="inventory-actions">
+      <solar-button id="addNewBtn" @click.native="showNewProductModal">
+        Add New Item
+      </solar-button>
+      <solar-button id="receiveShipmentBtn" @click.native="showShipmentModal">
+        Receive Shipment
+      </solar-button>
+    </div>
+
     <table id="inventoryTable" class="table">
       <tr>
         <th>Item</th>
@@ -22,18 +32,29 @@
         <td><div>X</div></td>
       </tr>
     </table>
+
+    <new-product-modal v-if="isNewProductVisible" @close="closeModals" />
+    <shipment-modal
+      v-if="isShipmentVisible"
+      :inventory="inventory"
+      @close="closeModals"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import SolarButton from '@/components/SolarButton.vue';
 import { IProductInventory } from '@/types/Product';
 
 @Component({
   name: 'Inventory',
-  components: {},
+  components: { SolarButton },
 })
 export default class Inventory extends Vue {
+  isNewProductVisible: boolean = false;
+  isShipmentVisible: boolean = false;
+
   inventory: IProductInventory[] = [
     {
       id: 1,
@@ -66,6 +87,15 @@ export default class Inventory extends Vue {
       idealQuantity: 20,
     },
   ];
+
+  showNewProductModal() {}
+
+  showShipmentModal() {}
+
+  closeModals() {
+    this.isNewProductVisible = false;
+    this.isShipmentVisible = false;
+  }
 }
 </script>
 
