@@ -40,7 +40,9 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SolarButton from '@/components/SolarButton.vue';
 import SolarModal from '@/components/modals/SolarModal.vue';
+
 import { IProduct, IProductInventory } from '@/types/Product';
+import { IShipment } from '@/types/Shipment';
 
 @Component({
   name: 'ShipmentModal',
@@ -50,7 +52,7 @@ export default class ShipmentModal extends Vue {
   @Prop({ required: true, type: Array as () => IProductInventory[] })
   inventory!: IProductInventory[];
 
-  qtyReceived: number = 0;
+  qtyReceived = 0;
 
   selectedProduct: IProduct = {
     id: 0,
@@ -63,7 +65,14 @@ export default class ShipmentModal extends Vue {
     updatedOn: new Date(),
   };
 
-  save() {}
+  save() {
+    const shipment: IShipment = {
+      productId: this.selectedProduct.id,
+      adjusment: this.qtyReceived,
+    };
+
+    this.$emit('save:shipment', shipment);
+  }
 
   close() {
     this.$emit('close');
