@@ -1,17 +1,25 @@
 <template>
   <div class="side-menu-container">
-    <img
-      id="imgLogo"
-      class="logo"
-      src="../assets/images/solar-coffee-logo.png"
-      alt="Solar Coffee logo"
-    />
+    <router-link to="/">
+      <img
+        id="imgLogo"
+        class="logo"
+        src="../assets/images/solar-coffee-logo.png"
+        alt="Solar Coffee logo"
+      />
+    </router-link>
     <h1>Management Portal</h1>
-    <solar-button
-      id="menuInventory"
-      :link="'/inventory'"
-    >
+    <solar-button id="menuInventory" :link="'/inventory'" is-full-width>
       Inventory
+    </solar-button>
+    <solar-button id="menuCustomers" :link="'/customers'" is-full-width>
+      Manage Customers
+    </solar-button>
+    <solar-button id="menuInvoice" :link="'/invoice/new '" is-full-width>
+      New Invoice
+    </solar-button>
+    <solar-button id="menuOrders" :link="'/orders '" is-full-width>
+      Orders
     </solar-button>
   </div>
 </template>
