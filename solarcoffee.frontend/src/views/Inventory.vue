@@ -82,8 +82,10 @@ export default class Inventory extends Vue {
     console.log(newProduct);
   }
 
-  saveNewShipment(shipment: IShipment) {
-    console.log(shipment);
+  async saveNewShipment(shipment: IShipment) {
+    await inventoryService.updateInventoryQuantity(shipment);
+    this.isShipmentVisible = false;
+    await this.initialize();
   }
 
   closeModals() {
@@ -91,12 +93,12 @@ export default class Inventory extends Vue {
     this.isShipmentVisible = false;
   }
 
-  async fetchData() {
+  async initialize() {
     this.inventory = await inventoryService.getInventory();
   }
 
   async created() {
-    await this.fetchData();
+    await this.initialize();
   }
 }
 </script>
