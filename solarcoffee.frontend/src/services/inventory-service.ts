@@ -1,10 +1,13 @@
 import axios from 'axios';
+import { IProductInventory } from '@/types/Product';
 
 export class InventoryService {
   API_URL = process.env.VUE_APP_API_URL;
 
-  public async getInventory(): Promise<any> {
-    const result = axios.get(`${this.API_URL}/inventory`);
-    console.log(result);
+  public async getInventory(): Promise<IProductInventory[]> {
+    const result = await axios.get<IProductInventory[]>(
+      `${this.API_URL}/inventory`,
+    );
+    return result.data;
   }
 }
