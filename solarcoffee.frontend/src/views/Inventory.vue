@@ -53,8 +53,12 @@ import NewProductModal from '@/components/modals/NewProductModal.vue';
 import ShipmentModal from '@/components/modals/ShipmentModal.vue';
 import SolarButton from '@/components/SolarButton.vue';
 
+import { InventoryService } from '@/services/inventory-service';
+
 import { IProduct, IProductInventory } from '@/types/Product';
 import { IShipment } from '@/types/Shipment';
+
+const inventoryService = new InventoryService();
 
 @Component({
   name: 'Inventory',
@@ -64,38 +68,7 @@ export default class Inventory extends Vue {
   isNewProductVisible = false;
   isShipmentVisible = false;
 
-  inventory: IProductInventory[] = [
-    {
-      id: 1,
-      product: {
-        id: 1,
-        name: 'Product1',
-        description: 'Description1',
-        price: 100,
-        isArchived: false,
-        isTaxable: true,
-        createdOn: new Date(),
-        updatedOn: new Date(),
-      },
-      quantityOnHand: 1,
-      idealQuantity: 10,
-    },
-    {
-      id: 2,
-      product: {
-        id: 2,
-        name: 'Product2',
-        description: 'Description2',
-        price: 200,
-        isArchived: false,
-        isTaxable: false,
-        createdOn: new Date(),
-        updatedOn: new Date(),
-      },
-      quantityOnHand: 2,
-      idealQuantity: 20,
-    },
-  ];
+  inventory: IProductInventory[] = [];
 
   showNewProductModal() {
     this.isNewProductVisible = true;
@@ -116,6 +89,14 @@ export default class Inventory extends Vue {
   closeModals() {
     this.isNewProductVisible = false;
     this.isShipmentVisible = false;
+  }
+
+  async fetchData() {
+    this.inventory = await inventoryService.getInventory();
+  }
+
+  async created() {
+    await this.fetchData();
   }
 }
 </script>

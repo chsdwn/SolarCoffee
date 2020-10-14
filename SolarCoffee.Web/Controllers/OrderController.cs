@@ -35,7 +35,7 @@ namespace SolarCoffee.Web.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("api/[controller]")]
         public IActionResult GetOrders()
         {
             var orders = _orderService.GetOrders();
