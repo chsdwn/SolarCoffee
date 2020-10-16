@@ -50,6 +50,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+
 import SolarButton from '@/components/SolarButton.vue';
 import SolarModal from '@/components/modals/SolarModal.vue';
 

@@ -49,6 +49,14 @@
             v-model="customer.primaryAddress.postalCode"
           />
         </li>
+        <li>
+          <label for="country">Country</label>
+          <input
+            id="country"
+            type="text"
+            v-model="customer.primaryAddress.country"
+          />
+        </li>
       </ul>
     </template>
     <template v-slot:footer>
@@ -57,13 +65,14 @@
         @button:click="save"
         aria-label="save new customer"
       >
-        <solar-button
-          type="button"
-          @button:click="close"
-          aria-label="Close modal"
-        >
-          Close
-        </solar-button>
+        Save Customer
+      </solar-button>
+      <solar-button
+        type="button"
+        @button:click="close"
+        aria-label="Close modal"
+      >
+        Close
       </solar-button>
     </template>
   </solar-modal>
@@ -71,8 +80,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+
 import SolarButton from '@/components/SolarButton.vue';
 import SolarModal from '@/components/modals/SolarModal.vue';
+
 import { ICustomer } from '@/types/Customer';
 
 @Component({
@@ -80,10 +91,17 @@ import { ICustomer } from '@/types/Customer';
   components: { SolarButton, SolarModal },
 })
 export default class NewCustomerModal extends Vue {
-  customer: ICustomer = {};
+  customer: ICustomer = {
+    id: 0,
+    firstName: '',
+    lastName: '',
+    primaryAddress: {},
+    createdOn: new Date(),
+    updatedOn: new Date(),
+  };
 
   save() {
-    this.$emit('save:custoemr', this.customer);
+    this.$emit('save:customer', this.customer);
   }
 
   close() {

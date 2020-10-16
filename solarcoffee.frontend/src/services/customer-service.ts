@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ICustomer } from '@/types/Customer';
 import { IServiceResponse } from '@/types/ServiceResponse';
 
-export default class CustomerService {
+export class CustomerService {
   API_URL = process.env.VUE_APP_API_URL;
 
   public async getCustomers() {

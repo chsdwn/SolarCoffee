@@ -60,6 +60,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+
 import NewProductModal from '@/components/modals/NewProductModal.vue';
 import ShipmentModal from '@/components/modals/ShipmentModal.vue';
 import SolarButton from '@/components/SolarButton.vue';
