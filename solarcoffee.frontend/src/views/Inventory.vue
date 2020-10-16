@@ -23,13 +23,24 @@
 
       <tr v-for="item in inventory" :key="item.id">
         <td>{{ item.product.name }}</td>
-        <td>{{ item.quantityOnHand }}</td>
+        <td
+          v-bind:class="
+            `${applyColor(item.quantityOnHand, item.idealQuantity)}`
+          "
+        >
+          {{ item.quantityOnHand }}
+        </td>
         <td>{{ item.product.price | price }}</td>
         <td>
           <span v-if="item.product.isTaxable">Yes</span>
           <span v-else>No</span>
         </td>
-        <td><div>X</div></td>
+        <td>
+          <i
+            class="lni lni-cross-circle product-archive"
+            @click="archiveProduct(item.product.id)"
+          ></i>
+        </td>
       </tr>
     </table>
 
@@ -54,11 +65,13 @@ import ShipmentModal from '@/components/modals/ShipmentModal.vue';
 import SolarButton from '@/components/SolarButton.vue';
 
 import { InventoryService } from '@/services/inventory-service';
+import { ProductService } from '@/services/product-service';
 
 import { IProduct, IProductInventory } from '@/types/Product';
 import { IShipment } from '@/types/Shipment';
 
 const inventoryService = new InventoryService();
+const productService = new ProductService();
 
 @Component({
   name: 'Inventory',
@@ -78,8 +91,21 @@ export default class Inventory extends Vue {
     this.isShipmentVisible = true;
   }
 
-  saveNewProduct(newProduct: IProduct) {
-    console.log(newProduct);
+  applyColor(current: number, target: number) {
+    if (current <= 0) return 'red';
+    if (Math.abs(target - current) > 10) return 'yellow';
+    return 'green';
+  }
+
+  async archiveProduct(id: number) {
+    await productService.archive(id);
+    await this.initialize();
+  }
+
+  async saveNewProduct(newProduct: IProduct) {
+    await productService.save(newProduct);
+    this.isNewProductVisible = false;
+    await this.initialize();
   }
 
   async saveNewShipment(shipment: IShipment) {
@@ -103,4 +129,33 @@ export default class Inventory extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '@/scss/global.scss';
+
+.green {
+  font-weight: bold;
+  color: $solar-green;
+}
+
+.yellow {
+  font-weight: bold;
+  color: $solar-yellow;
+}
+
+.red {
+  font-weight: bold;
+  color: $solar-red;
+}
+
+.inventory-actions {
+  margin-bottom: 0.8rem;
+  display: flex;
+}
+
+.product-archive {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: $solar-red;
+}
+</style>
