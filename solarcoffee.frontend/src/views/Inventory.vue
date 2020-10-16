@@ -4,10 +4,10 @@
     <hr />
 
     <div class="inventory-actions">
-      <solar-button id="addNewBtn" @click.native="showNewProductModal">
+      <solar-button id="addNewBtn" @button:click="showNewProductModal">
         Add New Item
       </solar-button>
-      <solar-button id="receiveShipmentBtn" @click.native="showShipmentModal">
+      <solar-button id="receiveShipmentBtn" @button:click="showShipmentModal">
         Receive Shipment
       </solar-button>
     </div>
