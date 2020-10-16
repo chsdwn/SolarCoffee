@@ -40,6 +40,8 @@ namespace SolarCoffee.Web.Controllers
         [HttpPatch]
         public IActionResult UpdateInventory([FromBody] ShipmentModel shipment)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var id = shipment.ProductId;
             var adjusment = shipment.Adjusment;
             _logger.LogInformation($"Updating inventory for {id}, adjusment: {adjusment}");
