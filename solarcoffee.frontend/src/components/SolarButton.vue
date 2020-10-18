@@ -1,7 +1,8 @@
 <template>
-  <div class="btn-link">
+  <div class="btn-">
     <button
       @click="onClick"
+      :disabled="disabled"
       :class="['solar-button', { 'full-width': isFullWidth }]"
       type="button"
     >
@@ -22,6 +23,9 @@ import { Prop } from 'vue-property-decorator';
 export default class SolarButton extends Vue {
   @Prop({ required: false, type: Boolean, default: false })
   isFullWidth?: boolean;
+
+  @Prop({ required: false, type: Boolean, default: false })
+  disabled?: boolean;
 
   onClick() {
     this.$emit('button:click');
